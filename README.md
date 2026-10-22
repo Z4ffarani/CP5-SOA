@@ -65,10 +65,10 @@ Pré-requisito: **JDK 21 ou superior** instalado. Não é necessário instalar o
    ```bash
    ./mvnw spring-boot:run
    ```
-   No Windows:
-   ```bash
+   No Windows (PowerShell ou CMD):
+   ```powershell
    chcp 65001
-   mvnw.cmd spring-boot:run
+   .\mvnw.cmd spring-boot:run
    ```
    O `chcp 65001` configura o terminal em UTF-8 para exibir corretamente os acentos dos logs.
 3. A API fica disponível em `http://localhost:8080`.
@@ -188,10 +188,10 @@ Arquivo: [`src/test/java/br/com/fiap/pedidos/PedidoControllerTest.java`](src/tes
 ./mvnw test
 ```
 
-No Windows:
+No Windows (PowerShell ou CMD):
 
-```bash
-mvnw.cmd test
+```powershell
+.\mvnw.cmd test
 ```
 
 ### Evidência da execução
