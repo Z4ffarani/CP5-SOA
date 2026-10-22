@@ -1,0 +1,203 @@
+openapi: 3.1.0
+info:
+  title: API de Pedidos
+  description: API REST para criação e consulta de pedidos de comércio eletrônico.
+  version: 1.0.0
+servers:
+- url: http://localhost:8080
+  description: Local
+tags:
+- name: Pedidos
+  description: Criação e consulta de pedidos
+paths:
+  /pedidos:
+    post:
+      tags:
+      - Pedidos
+      summary: Cria um pedido
+      description: Cria um pedido com status inicial CRIADO.
+      operationId: criar
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PedidoRequest"
+        required: true
+      responses:
+        "201":
+          description: Pedido criado
+          headers:
+            Location:
+              description: URI do pedido criado
+              style: simple
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PedidoResponse"
+        "400":
+          description: Dados inválidos ou JSON malformado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErroResponse"
+              example:
+                timestamp: 2026-10-21T19:30:00.000-03:00
+                status: 400
+                erro: Dados inválidos
+                detalhes:
+                - cliente é obrigatório
+                - valor deve ser maior que zero
+                caminho: /pedidos
+                requestId: b7e4a2d1-5c3f-4a8e-9b6d-1e2f3a4b5c6d
+        "500":
+          description: Erro interno
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErroResponse"
+  /pedidos/{id}:
+    get:
+      tags:
+      - Pedidos
+      summary: Consulta um pedido por identificador
+      operationId: buscarPorId
+      parameters:
+      - name: id
+        in: path
+        description: Identificador do pedido (UUID)
+        required: true
+        schema:
+          type: string
+          format: uuid
+        example: 3f2b1c9e-8a4d-4e2b-9c1a-7d5e6f8a9b0c
+      responses:
+        "200":
+          description: Pedido encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/PedidoResponse"
+        "400":
+          description: Identificador em formato inválido
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErroResponse"
+              example:
+                timestamp: 2026-10-21T19:30:00.000-03:00
+                status: 400
+                erro: Identificador inválido
+                detalhes:
+                - O identificador deve ser um UUID válido
+                caminho: /pedidos/abc
+                requestId: b7e4a2d1-5c3f-4a8e-9b6d-1e2f3a4b5c6d
+        "404":
+          description: Pedido não encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErroResponse"
+              example:
+                timestamp: 2026-10-21T19:30:00.000-03:00
+                status: 404
+                erro: Pedido não encontrado
+                detalhes:
+                - Pedido 3f2b1c9e-8a4d-4e2b-9c1a-7d5e6f8a9b0c não encontrado
+                caminho: /pedidos/3f2b1c9e-8a4d-4e2b-9c1a-7d5e6f8a9b0c
+                requestId: b7e4a2d1-5c3f-4a8e-9b6d-1e2f3a4b5c6d
+        "500":
+          description: Erro interno
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErroResponse"
+components:
+  schemas:
+    PedidoRequest:
+      type: object
+      description: Dados para criação de um pedido
+      properties:
+        cliente:
+          type: string
+          description: Nome ou identificação do cliente
+          example: Maria Silva
+          minLength: 1
+        descricao:
+          type: string
+          description: Descrição do pedido
+          example: Notebook Dell Inspiron 15
+          minLength: 1
+        valor:
+          type: number
+          description: Valor do pedido
+          example: 4599.9
+          minimum: 0.01
+      required:
+      - cliente
+      - descricao
+      - valor
+    PedidoResponse:
+      type: object
+      description: Pedido armazenado
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: Identificador único do pedido
+          example: 3f2b1c9e-8a4d-4e2b-9c1a-7d5e6f8a9b0c
+        cliente:
+          type: string
+          description: Nome ou identificação do cliente
+          example: Maria Silva
+        descricao:
+          type: string
+          description: Descrição do pedido
+          example: Notebook Dell Inspiron 15
+        valor:
+          type: number
+          description: Valor do pedido
+          example: 4599.9
+        status:
+          type: string
+          description: Status do pedido
+          enum:
+          - CRIADO
+          example: CRIADO
+        dataCriacao:
+          type: string
+          format: date-time
+          description: Data e hora de criação
+          example: 2026-10-21T19:30:00.000-03:00
+    ErroResponse:
+      type: object
+      description: Resposta padrão de erro
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: Data e hora do erro
+          example: 2026-10-21T19:30:00.000-03:00
+        status:
+          type: integer
+          format: int32
+          description: Código HTTP
+          example: 404
+        erro:
+          type: string
+          description: Descrição do erro
+          example: Pedido não encontrado
+        detalhes:
+          type: array
+          description: Detalhes do erro
+          example:
+          - Pedido 3f2b1c9e-8a4d-4e2b-9c1a-7d5e6f8a9b0c não encontrado
+          items:
+            type: string
+        caminho:
+          type: string
+          description: Caminho da requisição
+          example: /pedidos/3f2b1c9e-8a4d-4e2b-9c1a-7d5e6f8a9b0c
+        requestId:
+          type: string
+          description: Identificador da requisição
+          example: b7e4a2d1-5c3f-4a8e-9b6d-1e2f3a4b5c6d
