@@ -54,7 +54,7 @@ flowchart LR
 
 ## Como executar a API
 
-Pré-requisito: **JDK 21** instalado. Não é necessário instalar o Maven (o projeto usa o Maven Wrapper).
+Pré-requisito: **JDK 21 ou superior** instalado. Não é necessário instalar o Maven (o projeto usa o Maven Wrapper).
 
 1. Clone o repositório:
    ```bash
@@ -67,8 +67,10 @@ Pré-requisito: **JDK 21** instalado. Não é necessário instalar o Maven (o pr
    ```
    No Windows:
    ```bash
+   chcp 65001
    mvnw.cmd spring-boot:run
    ```
+   O `chcp 65001` configura o terminal em UTF-8 para exibir corretamente os acentos dos logs.
 3. A API fica disponível em `http://localhost:8080`.
 
 ## Exemplos de requisição e resposta
