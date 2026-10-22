@@ -238,6 +238,18 @@ Logs gerados pela aplicação durante as requisições dos exemplos acima:
 {"@timestamp":"2026-10-22T00:35:23.05565002Z","@version":"1","message":"Dados do pedido inválidos","logger_name":"br.com.fiap.pedidos.exception.GlobalExceptionHandler","thread_name":"http-nio-8080-exec-7","level":"WARN","level_value":30000,"requestId":"293a0d74-7075-45d4-af11-a6e8b52fe1b3","operacao":"CRIAR_PEDIDO","detalhes":["cliente é obrigatório","valor deve ser maior que zero"]}
 ```
 
+## Onde verificar cada item
+
+| Ambiente | O que verificar |
+|---|---|
+| VS Code | Código-fonte da API (`src/main`), código do teste (`src/test`) e especificação OpenAPI (`docs/openapi.yaml`). |
+| Terminal executando `.\mvnw.cmd test` | Resultado do teste automatizado: `Tests run: 4, Failures: 0` e `BUILD SUCCESS`. |
+| Terminal executando `.\mvnw.cmd spring-boot:run` | Logs estruturados em JSON gerados a cada requisição. |
+| Swagger UI, seção **Responses** | Documentação dos códigos de status e exemplos de resposta de cada operação. |
+| Swagger UI, **Try it out** → **Execute** → **Server response** | Resposta real da API (código HTTP e JSON) para a requisição enviada. |
+
+O `requestId` exibido na resposta de erro do Swagger é o mesmo registrado no log do terminal.
+
 ## Estrutura do projeto
 
 ```text
