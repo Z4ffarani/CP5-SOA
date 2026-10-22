@@ -70,7 +70,7 @@ Pré-requisito: **JDK 21 ou superior** instalado. Não é necessário instalar o
    chcp 65001
    .\mvnw.cmd spring-boot:run
    ```
-   O `chcp 65001` configura o terminal em UTF-8 para exibir corretamente os acentos dos logs.
+   O `chcp 65001` configura o terminal em UTF-8 para exibir corretamente os acentos dos logs. Ele deve ser executado no mesmo terminal, antes de iniciar a API, e vale apenas para aquele terminal. Sem ele, os acentos aparecem trocados (ex.: `n├úo`) apenas na exibição; o conteúdo gerado pela API está correto.
 3. A API fica disponível em `http://localhost:8080`.
 
 ## Exemplos de requisição e resposta
